@@ -174,11 +174,10 @@ class DevicePreview extends StatefulWidget {
   /// Indicates whether the device preview is currently enabled.
   static bool isEnabled(BuildContext context) {
     if (_isEnabled(context)) {
-      return context.select(
-        (DevicePreviewStore store) => store.state.maybeMap(
-          initialized: (initialized) => initialized.data.isEnabled,
-          orElse: () => false,
-        ),
+      final store = Provider.of<DevicePreviewStore>(context, listen: false);
+      return store.state.maybeMap(
+        initialized: (initialized) => initialized.data.isEnabled,
+        orElse: () => false,
       );
     }
     return false;
@@ -225,7 +224,7 @@ class DevicePreview extends StatefulWidget {
     BuildContext context, {
     bool enablePreview = true,
   }) {
-    final store = Provider.of<DevicePreviewStore>(context);
+    final store = Provider.of<DevicePreviewStore>(context, listen: false);
     store.data = store.data.copyWith(
       isToolbarVisible: true,
       isEnabled: enablePreview,
@@ -240,7 +239,7 @@ class DevicePreview extends StatefulWidget {
     BuildContext context, {
     bool disablePreview = true,
   }) {
-    final store = Provider.of<DevicePreviewStore>(context);
+    final store = Provider.of<DevicePreviewStore>(context, listen: false);
     store.data = store.data.copyWith(
       isToolbarVisible: false,
       isEnabled: !disablePreview,
@@ -425,10 +424,10 @@ class _DevicePreviewState extends State<DevicePreview> {
     return Container(
       color: widget.backgroundColor ?? theme.canvasColor,
       padding: EdgeInsets.only(
-        top: 20 + mediaQuery.viewPadding.top,
-        right: 20 + mediaQuery.viewPadding.right,
-        left: 20 + mediaQuery.viewPadding.left,
-        bottom: 20,
+        top: 0 + mediaQuery.viewPadding.top,
+        right: 0 + mediaQuery.viewPadding.right,
+        left: 0 + mediaQuery.viewPadding.left,
+        bottom: 0,
       ),
       child: FittedBox(
         fit: BoxFit.contain,
